@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Preferences</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #808080; 
+            text-align: center;
+            font-size: 18px;
+            border: 2px solid #ffd700;
+            box-sizing: border-box;
+        }
+
+        #container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        #output {
+            margin-top: 20px;
+        }
+
+        #image {
+            display: block;
+            margin: 0 auto; 
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ffd700; 
+            border-radius: 8px; 
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h1>Study Buddy App</h1>
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" placeholder="Enter your name">
+        <br><br>
+        <label for="class">Class You're Taking:</label>
+        <input type="text" id="class" placeholder="Enter your class">
+        <br><br>
+        <label for="difficulty">Class Difficulty:</label>
+        <input type="text" id="difficulty" placeholder="Enter class difficulty">
+        <br><br>
+
+        <button onclick="findStudyBuddy()">Find Study Buddy</button>
+        <div id="output"></div>
+
+        <img id="image" src="https://firstgen.naspa.org/images/dmImage/StandardImage/standard_1800x1090_two-male-students-studying.jpg"
+            alt="Study Buddy Image">
+    </div>
+
+    <script>
+        function findStudyBuddy() {
+            const name = document.getElementById('name').value;
+            const selectedClass = document.getElementById('class').value;
+            const difficulty = document.getElementById('difficulty').value;
+
+            if (name && selectedClass && difficulty) {
+                const message = `Hello, ${name}! We're finding a study buddy for your class: ${selectedClass} (Difficulty: ${difficulty}).`;
+
+                document.getElementById('output').innerText = message;
+                window.location.href = 'StudyPrefrences.html'; // Updated the file name
+            } else {
+                alert('Please complete the following.');
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Preferences</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            font-size: 18px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 48px;
+        }
+
+        h2, h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 32px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        textarea {
+            width: 60%;
+            height: 80px;
+            margin-top: 10px;
+            padding: 5px;
+            resize: none;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        button {
+            font-size: 20px;
+            background-color: #ffd700;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Study Preferences</h1>
+
+    <label>
+        <input type="checkbox" name="studyOption" value="test"> Test
+    </label>
+
+    <label>
+        <input type="checkbox" name="studyOption" value="assignment"> Assignment
+    </label>
+
+    <label>
+        <input type="checkbox" name="studyOption" value="review"> Review
+    </label>
+    <br><br>
+    <h2>Describe What You Would Like to Study For:</h2>
+    <textarea name="studyDescription" placeholder="Enter your study description"></textarea>
+    <br><br>
+    <h3>How Would You Prefer to Study?</h3>
+    <label>
+        <input type="radio" name="studyPreference" value="zoom" onclick="enableCamera()"> Zoom
+    </label>
+
+    <label>
+        <input type="radio" name="studyPreference" value="inPerson" onclick="enableLocation()"> In Person
+    </label>
+
+    <br><br>
+
+    <button onclick="saveStudyPreferences()">Save Preferences</button>
+
+    <script>
+        let selectedOption, studyDescription, selectedPreference;
+
+        function saveStudyPreferences() {
+            const checkboxes = document.getElementsByName('studyOption');
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedOption = checkbox.value;
+                }
+            });
+
+            studyDescription = document.getElementsByName('studyDescription')[0].value;
+
+            const studyPreferenceRadios = document.getElementsByName('studyPreference');
+
+            studyPreferenceRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedPreference = radio.value;
+                }
+            });
+
+            if (selectedOption && studyDescription && selectedPreference) {
+                alert(`You selected: ${selectedOption}\nStudy Description: ${studyDescription}\nStudy Preference: ${selectedPreference}`);
+
+                if (selectedPreference === 'inPerson') {
+                    enableLocation();
+                } else {
+                    navigateToMatchmaking();
+                }
+            } else {
+                alert('Please complete the required fields.');
+            }
+        }
+
+        function enableCamera() {
+            const isCameraEnabled = confirm("Do you want to enable the camera?");
+            if (isCameraEnabled) {
+                navigateToMatchmaking();
+            }
+        }
+
+        function enableLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const userLocation = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    };
+                    alert(`Location enabled. Your coordinates: ${userLocation.latitude}, ${userLocation.longitude}`);
+                    navigateToMatchmaking();
+                }, error => {
+                    alert(`Error getting location: ${error.message}`);
+                    navigateToMatchmaking();
+                });
+            } else {
+                alert("Geolocation is not supported by your browser");
+                navigateToMatchmaking();
+            }
+        }
+
+        function navigateToMatchmaking() {
+            window.location.href = 'matchmaking.html';
+        }
+    </script>
+</body>
+
+</html>

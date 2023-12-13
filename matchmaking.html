@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            font-size: 18px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 48px;
+        }
+
+        p {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 24px;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"] {
+            width: 60%;
+            height: 30px;
+            margin-top: 10px;
+            padding: 5px;
+            resize: none;
+            font-size: 18px;
+        }
+
+        button {
+            font-size: 20px;
+            background-color: #ffd700;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Contact Information</h1>
+
+    <p id="matchedMessage"></p>
+    <br><br>
+    <h2>How would you like to contact your study buddy?</h2>
+    <br><br>
+    <label>
+        <input type="radio" name="contactOption" value="phone"> Phone Number
+    </label>
+
+    <label>
+        <input type="radio" name="contactOption" value="email"> Email
+    </label>
+    <br><br>
+    <label for="contactInfo">Enter your contact information:</label>
+    <input type="text" id="contactInfo" placeholder="Enter your phone number or email">
+    <br><br>
+    <button onclick="startChat()">Start Chat</button>
+
+    <script>
+        function generateNewName() {
+            const names = ["John", "Alice", "Bob", "Emma", "Charlie"];
+
+            const randomIndex = Math.floor(Math.random() * names.length);
+
+            const matchedMessageElement = document.getElementById('matchedMessage');
+            matchedMessageElement.textContent = `Congratulations! You've been matched with ${names[randomIndex]}.`;
+        }
+
+        function startChat() {
+            const contactOption = document.querySelector('input[name="contactOption"]:checked');
+            const contactInfo = document.getElementById('contactInfo').value;
+
+            if (contactOption && contactInfo) {
+                const matchedMessageElement = document.getElementById('matchedMessage');
+                const chatKey = `${contactOption.value}_${contactInfo}`;
+
+                // Set a flag in localStorage
+                localStorage.setItem(chatKey, 'true');
+
+                matchedMessageElement.textContent += '\nYou can start chatting now!';
+                window.location.href = 'ChatRoom.html'; 
+            } else {
+                alert('Please select a contact option and enter contact information.');
+            }
+        }
+
+        generateNewName();
+    </script>
+</body>
+
+</html>

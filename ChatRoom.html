@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #eceff1; /* Grey background color */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #chat-container {
+            flex: 1;
+            overflow-y: scroll;
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            background-color: #fff; /* White background for the chat container */
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft box shadow for a card-like appearance */
+        }
+
+        .message {
+            background-color: #fff; /* White background color for messages */
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            max-width: 70%;
+            font-size: 16px;
+            border: 2px solid #fff176; /* Yellow border color */
+        }
+
+        .own-message {
+            align-self: flex-end;
+            background-color: #fff; /* White background color for own messages */
+            border: 2px solid #ffb6c1; /* Light pink border color for own messages */
+        }
+
+        #message-input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #fff;
+            border-top: 1px solid #ccc;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        #message-input input {
+            flex: 1;
+            padding: 15px;
+            margin-right: 10px;
+            border: 2px solid #fff176; /* Yellow border color */
+            border-radius: 10px;
+            outline: none;
+            font-size: 18px;
+        }
+
+        #send-button {
+            background-color: #fff176; /* Yellow color for the send button */
+            color: #000; /* Black text color for better visibility */
+            border: 2px solid #fff176; /* Yellow border color */
+            padding: 15px 30px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chat-container"></div>
+    <div id="message-input">
+        <input type="text" id="message" placeholder="Type your message..." onkeydown="handleKeyPress(event)">
+        <button id="send-button" onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        const ws = new WebSocket('ws://localhost:3000');
+
+        ws.onmessage = (event) => {
+            if (event.data instanceof Blob) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    displayMessage(reader.result);
+                };
+                reader.readAsText(event.data);
+            } else {
+                displayMessage(event.data);
+            }
+        };
+
+        function sendMessage() {
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value.trim();
+
+            if (message !== '') {
+                ws.send(message);
+                displayMessage('You: ' + message);
+                messageInput.value = '';
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function displayMessage(message) {
+            const chatContainer = document.getElementById('chat-container');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'message';
+            messageElement.textContent = message;
+            chatContainer.appendChild(messageElement);
+
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+
+</html>
